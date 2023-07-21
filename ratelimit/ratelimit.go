@@ -2,6 +2,7 @@ package ratelimit
 
 import (
 	"fmt"
+	"github.com/caddyserver/caddy/v2"
 	"net"
 	"net/http"
 	"net/netip"
@@ -10,8 +11,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/caddyserver/caddy/v2"
 	"github.com/caddyserver/caddy/v2/modules/caddyhttp"
+	lavaauth "github.com/lavanet/caddy-router"
 	"go.uber.org/zap"
 )
 
@@ -133,6 +134,15 @@ func (rl *RateLimit) Validate() error {
 
 // ServeHTTP implements caddyhttp.MiddlewareHandler.
 func (rl *RateLimit) ServeHTTP(w http.ResponseWriter, r *http.Request, next caddyhttp.Handler) error {
+	user := lavaauth.GetUserProfileFromRequest(r, rl.logger)
+	if user == nil {
+		rl.logger.Error("failed to load user form request.")
+		w.WriteHeader(http.StatusUnauthorized)
+		return caddyhttp.Error(http.StatusUnauthorized, nil)
+	}
+	if user.IsPaid() {
+		return next.ServeHTTP(w, r)
+	}
 	keyValue, err := rl.keyVar.Evaluate(r)
 	if err != nil {
 		rl.logger.Error("failed to evaluate variable",

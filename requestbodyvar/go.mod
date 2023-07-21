@@ -1,4 +1,4 @@
-module github.com/RussellLuo/caddy-ext/requestbodyvar
+module github.com/lavanet/caddy-rate-limit/requestbodyvar
 
 go 1.14
 

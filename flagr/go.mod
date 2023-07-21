@@ -1,4 +1,4 @@
-module github.com/RussellLuo/caddy-ext/flagr
+module github.com/lavanet/caddy-rate-limit/flagr
 
 go 1.14
 

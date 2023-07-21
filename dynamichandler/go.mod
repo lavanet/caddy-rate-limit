@@ -1,4 +1,4 @@
-module github.com/RussellLuo/caddy-ext/dynamichandler
+module github.com/lavanet/caddy-rate-limit/dynamichandler
 
 go 1.17
 

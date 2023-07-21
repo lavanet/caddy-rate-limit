@@ -1,4 +1,4 @@
-module github.com/RussellLuo/caddy-ext/layer4
+module github.com/lavanet/caddy-rate-limit/layer4
 
 go 1.14
 
